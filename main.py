@@ -24,10 +24,13 @@ async def change_color(guild, member, color):
     try:
         color = int(color.replace("#", ""), 16)
         if color > 16777215:
+            print('The input is too huge.')
             return "<:YAMERO:465570543781937172> Your input is too huge!"
     except ValueError:
-        return "❌ I am unable to understand your input!"
+        print('The input is invalid.')
+        return "❌ I am unable to understand your input! I only understand hexadecimal/HTML color codes."
     except:
+        print('Something gone wrong.')
         return "<:DAT_FACE:442089694763810817> Oh no something broke!"
     if not colorRole:
         if member.id != owner_id:
@@ -43,8 +46,10 @@ async def change_color(guild, member, color):
     try:
         await colorRole.edit(colour=discord.Colour(color))
     except discord.errors.Forbidden:
+        print('Forbidden.')
         return "<a:ThisIsFineIntensifies:442094172682452993> I don't have access to the role!"
     except:
+        print('Something gone wrong.')
         return "<:DAT_FACE:442089694763810817> Oh no something broke!"
     print('{0} has been updated for {1}'.format(colorRole, member))
     return 0
@@ -64,6 +69,7 @@ async def _changecolor(ctx, color: str):
     print('{0.author} requested a color change to {1}'.format(ctx, color))
     if not discord.utils.find(lambda r: r.name == str(ctx.author.id), ctx.author.roles) and not discord.utils.find(lambda r: any(r.id == id for id in roles_with_color_access), ctx.author.roles):
         await ctx.send(content="🚫 You are not allowed to choose a color.\nIn order to choose a color you need any of these roles: " + ", ".join("<@&{}>".format(id) for id in roles_with_color_access), hidden=True)
+        print('But they are not allowed.')
         return
     result = await change_color(ctx.guild, ctx.author, color)
     if result:
