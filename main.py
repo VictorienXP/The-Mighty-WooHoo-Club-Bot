@@ -2,6 +2,7 @@ import json
 import discord
 from discord_slash import SlashCommand
 from discord_slash.utils.manage_commands import create_option
+import webcolors
 
 with open('config.json') as config_file:
     config = json.load(config_file)
@@ -22,13 +23,18 @@ async def on_ready():
 async def change_color(guild, member, color):
     colorRole = discord.utils.find(lambda r: r.name == str(member.id), guild.roles)
     try:
+        color = webcolors.name_to_hex(color)
+        print('Interpreted as {0}.'.format(color))
+    except:
+        pass
+    try:
         color = int(color.replace("#", ""), 16)
         if color > 16777215:
             print('The input is too huge.')
             return "<:YAMERO:465570543781937172> Your input is too huge!"
     except ValueError:
         print('The input is invalid.')
-        return "❌ I am unable to understand your input! I only understand hexadecimal/HTML color codes."
+        return "❌ I am unable to understand your input! I only understand hexadecimal/HTML/CSS3 color codes/names."
     except:
         print('Something gone wrong.')
         return "<:DAT_FACE:442089694763810817> Oh no something broke!"
