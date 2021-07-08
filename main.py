@@ -39,8 +39,6 @@ async def change_color(guild, member, color):
         print('Something gone wrong.')
         return "<:DAT_FACE:442089694763810817> Oh no something broke!"
     if not colorRole:
-        if member.id != owner_id:
-            return "🚫 This is currently unsupported!"
         colorRole = await guild.create_role(name=member.id, colour=discord.Colour(color))
         positron = discord.utils.find(lambda r: r.id == role_position, guild.roles)
         await colorRole.edit(position=positron.position - 1)
